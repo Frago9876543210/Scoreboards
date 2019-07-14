@@ -39,9 +39,11 @@ class Scoreboards extends PluginBase implements Listener{
 		$player = $e->getPlayer();
 
 		$id = spl_object_id($player);
-		foreach(self::$scoreboards[$id] as $scoreboard){
-			$scoreboard->removeViewer($player, false);
+		if(isset(self::$scoreboards[$id])){
+			foreach(self::$scoreboards[$id] as $scoreboard){
+				$scoreboard->removeViewer($player, false);
+			}
+			unset(self::$scoreboards[$id]);
 		}
-		unset(self::$scoreboards[$id]);
 	}
 }
