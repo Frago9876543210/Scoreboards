@@ -80,7 +80,7 @@ class Scoreboard{
 		$pk = SetScorePacket::change([$entry]);
 
 		foreach($this->viewers as $viewer){
-			$viewer->sendDataPacket($pk);
+			$viewer->getNetworkSession()->sendDataPacket($pk);
 		}
 	}
 
@@ -92,7 +92,7 @@ class Scoreboard{
 			$entry = $this->entries[$player];
 			$pk = SetScorePacket::remove([$entry]);
 			foreach($this->viewers as $viewer){
-				$viewer->sendDataPacket($pk);
+				$viewer->getNetworkSession()->sendDataPacket($pk);
 			}
 			unset($this->entries[$player]);
 		}
@@ -112,14 +112,14 @@ class Scoreboard{
 		Scoreboards::addScoreboard($player, $this);
 
 		$objective = $this->getObjective();
-		$player->sendDataPacket(SetDisplayObjectivePacket::create(
+		$player->getNetworkSession()->sendDataPacket(SetDisplayObjectivePacket::create(
 			$objective->displaySlot->name(),
 			$objective->objectiveName,
 			$objective->displayName,
 			$objective->criteriaName,
 			$objective->sortOrder->getMagicNumber()
 		));
-		$player->sendDataPacket(SetScorePacket::change($this->entries));
+		$player->getNetworkSession()->sendDataPacket(SetScorePacket::change($this->entries));
 
 		$this->viewers[spl_object_id($player)] = $player;
 	}
@@ -134,8 +134,8 @@ class Scoreboard{
 			if($send){
 				Scoreboards::removeScoreboard($player, $this);
 
-				$player->sendDataPacket(RemoveObjectivePacket::create($this->objective->objectiveName));
-				$player->sendDataPacket(SetScorePacket::remove($this->entries));
+				$player->getNetworkSession()->sendDataPacket(RemoveObjectivePacket::create($this->objective->objectiveName));
+				$player->getNetworkSession()->sendDataPacket(SetScorePacket::remove($this->entries));
 			}
 			unset($this->viewers[$id]);
 		}
