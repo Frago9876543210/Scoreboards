@@ -42,11 +42,11 @@ final class SortOrder{
 	/** @var self[] */
 	private static $numericIdMap = [];
 
-	protected static function setup() : iterable{
-		return [
+	protected static function setup() : void{
+		self::registerAll(
 			new self("ascending", 0),
 			new self("descending", 1)
-		];
+		);
 	}
 
 	protected static function register(self $member) : void{

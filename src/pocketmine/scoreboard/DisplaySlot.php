@@ -37,11 +37,11 @@ use pocketmine\utils\EnumTrait;
 final class DisplaySlot{
 	use EnumTrait;
 
-	protected static function setup() : iterable{
-		return [
+	protected static function setup() : void{
+		self::registerAll(
 			new self("belowname"),
 			new self("list"),
 			new self("sidebar")
-		];
+		);
 	}
 }
